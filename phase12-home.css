@@ -1,0 +1,122 @@
+/* LEX Market Phase 12 — Homepage-only visual refinement.
+   Scoped to .home-page so other pages and shared functionality remain untouched. */
+.home-page main > .hero {
+  background:
+    radial-gradient(ellipse at 84% 18%, rgba(196,174,255,.25), transparent 34%),
+    radial-gradient(ellipse at 5% 100%, rgba(31,8,95,.32), transparent 38%),
+    linear-gradient(125deg,#2f126f 0%,#5120bd 48%,#7545ee 100%);
+  border-radius: 0 0 28px 28px;
+  box-shadow: 0 16px 38px rgba(59,25,132,.17);
+}
+.home-page .hero-grid { min-height: 438px; gap: clamp(22px,4vw,52px); }
+.home-page .hero-copy { padding: 48px 0; }
+.home-page .hero .pill {
+  background: rgba(255,255,255,.12);
+  border-color: rgba(255,255,255,.27);
+  letter-spacing: 1.35px;
+  padding: 8px 13px;
+}
+.home-page .hero h1 { max-width: 620px; font-size: clamp(36px,4.5vw,56px); line-height: 1.01; letter-spacing: -2.1px; }
+.home-page .hero h1 em { color: #e4d8ff; }
+.home-page .hero p { max-width: 490px; font-size: 15px; line-height: 1.75; color: #f0eaff; }
+.home-page .hero-buttons { margin: 27px 0 22px; }
+.home-page .hero .btn { min-height: 46px; padding: 13px 20px; border-radius: 12px; }
+.home-page .hero .btn.primary { box-shadow: 0 9px 23px rgba(20,5,60,.22); }
+.home-page .hero .btn.secondary { background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.42); }
+.home-page .trust { gap: 10px 18px; line-height: 1.7; }
+.home-page .hero-showcase { min-height: 390px; }
+.home-page .showcase-glow { width: 340px; height: 340px; background: rgba(218,204,255,.18); }
+.home-page .showcase-card { width: min(300px, calc(100% - 44px)); padding: 19px; border: 1px solid rgba(255,255,255,.65); border-radius: 24px; box-shadow: 0 28px 68px rgba(22,4,63,.3); transform: rotate(-.5deg); }
+.home-page .showcase-card .hot { padding: 6px 10px; }
+.home-page .hero-product-image { height: 225px; }
+.home-page .showcase-info { padding: 5px 2px 1px; }
+.home-page .showcase-info small { font-size: 11px; }
+.home-page .showcase-info strong { font-size: 23px; }
+.home-page .float-badge { padding: 10px 13px; border: 1px solid #eee7ff; border-radius: 12px; box-shadow: 0 12px 28px rgba(35,13,87,.16); }
+.home-page main > .section { padding-top: 46px; padding-bottom: 46px; }
+.home-page .heading { margin-bottom: 23px; }
+.home-page .heading .eyebrow, .home-page .center-heading .eyebrow { letter-spacing: 1.6px; color: #7850d5; }
+.home-page .heading h2 { font-size: clamp(23px,2.5vw,29px); letter-spacing: -1px; }
+.home-page .heading > a { padding: 8px 0 4px 10px; }
+.home-page .category-grid { gap: 13px; }
+.home-page .category-card { min-height: 132px; padding: 17px 15px; border-radius: 18px; box-shadow: 0 7px 22px rgba(40,22,90,.045); transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
+.home-page .category-card b { width: 43px; height: 43px; border-radius: 14px; font-size: 22px; margin-bottom: 13px; }
+.home-page .category-card strong { font-size: 13px; }
+.home-page .category-card small { font-size: 10px; line-height: 1.45; }
+.home-page .deal-banner { position: relative; overflow: hidden; padding: 26px 29px; border: 1px solid rgba(255,255,255,.17); border-radius: 21px; background: radial-gradient(ellipse at 92% 8%,rgba(191,164,255,.24),transparent 35%),linear-gradient(110deg,#321071 0%,#5723c7 57%,#7542e9 100%); box-shadow: 0 15px 34px rgba(75,31,199,.17); }
+.home-page .deal-banner > div:first-child { max-width: 65%; }
+.home-page .deal-banner span { letter-spacing: 1.6px; }
+.home-page .deal-banner strong { font-size: clamp(22px,2.8vw,30px); letter-spacing: -.8px; }
+.home-page .deal-banner p { font-size: 12px; line-height: 1.6; }
+.home-page .deal-count { min-width: 125px; padding-left: 20px; border-left: 1px solid rgba(255,255,255,.25); }
+.home-page .deal-count b { font-size: 19px; letter-spacing: 1.5px; }
+.home-page .deal-count a { display: inline-block; margin-top: 3px; padding: 7px 10px; border-radius: 8px; background: rgba(255,255,255,.14); }
+.home-page #homeProducts, .home-page #featuredProducts { row-gap: 18px; }
+.home-page .promo-section { padding-top: 18px !important; }
+.home-page .promo-card { min-height: 160px; padding: 25px; border: 1px solid rgba(255,255,255,.13); border-radius: 20px; box-shadow: 0 10px 25px rgba(39,15,91,.1); }
+.home-page .promo-card.free { background: radial-gradient(ellipse at 90% 20%,rgba(255,255,255,.18),transparent 34%),linear-gradient(120deg,#4d1cc5,#8957f4); }
+.home-page .promo-card.safe { background: radial-gradient(ellipse at 90% 20%,rgba(255,255,255,.13),transparent 34%),linear-gradient(120deg,#271052,#51249c); }
+.home-page .promo-card strong { font-size: 22px; letter-spacing: -.4px; }
+.home-page .promo-card a { display: inline-flex; padding: 8px 0; }
+.home-page .promo-art { font-size: 56px; filter: drop-shadow(0 8px 9px rgba(24,8,63,.16)); }
+.home-page .why-section { border-top: 1px solid #eee8f8; border-bottom: 1px solid #eee8f8; background: linear-gradient(180deg,#fff 0%,#fbf9ff 100%); }
+.home-page .center-heading h2 { font-size: clamp(22px,2.6vw,28px); letter-spacing: -.7px; }
+.home-page .benefits { gap: 12px; }
+.home-page .benefits > div { padding: 19px 12px; border-radius: 16px; box-shadow: 0 6px 18px rgba(40,22,90,.035); }
+.home-page .benefits b { width: 42px; height: 42px; border-radius: 14px; }
+.home-page .benefits strong { font-size: 12px; }
+.home-page .benefits small { font-size: 10px; line-height: 1.5; }
+@media (hover:hover) and (min-width:761px) {
+  .home-page .category-card:hover { transform: translateY(-4px); border-color: #d4c5fa; box-shadow: 0 15px 28px rgba(55,28,120,.11); }
+  .home-page .showcase-card { transition: transform .25s ease; }
+  .home-page .showcase-card:hover { transform: translateY(-3px) rotate(0); }
+}
+@media (max-width:760px) {
+  .home-page main > .hero { border-radius: 0 0 20px 20px; }
+  .home-page .hero-grid { min-height: auto; gap: 4px; }
+  .home-page .hero-copy { padding: 31px 0 13px; }
+  .home-page .hero h1 { font-size: clamp(31px,8vw,43px); letter-spacing: -1.5px; margin: 14px 0 12px; }
+  .home-page .hero p { font-size: 12px; line-height: 1.65; }
+  .home-page .hero-buttons { gap: 8px; margin: 17px 0 14px; }
+  .home-page .hero .btn { min-height: 42px; padding: 10px 13px; font-size: 11px; }
+  .home-page .trust { gap: 5px 12px; font-size: 9px; }
+  .home-page .hero-showcase { min-height: 295px; margin: 0 0 8px; }
+  .home-page .showcase-glow { width: 250px; height: 250px; }
+  .home-page .showcase-card { width: 218px; padding: 12px; border-radius: 18px; }
+  .home-page .hero-product-image { height: 165px; }
+  .home-page .showcase-info strong { font-size: 19px; }
+  .home-page .float-badge { padding: 7px 9px; font-size: 9px; }
+  .home-page .float-badge.delivery { left: 0; bottom: 35px; }
+  .home-page .float-badge.rated { right: 0; top: 24px; }
+  .home-page main > .section { padding-top: 30px; padding-bottom: 30px; }
+  .home-page .heading { margin-bottom: 16px; }
+  .home-page .category-grid { gap: 7px; }
+  .home-page .category-card { min-height: 80px; padding: 7px 3px; border-radius: 12px; }
+  .home-page .category-card b { width: 37px; height: 37px; font-size: 18px; margin-bottom: 6px; }
+  .home-page .category-card strong { font-size: 9px; }
+  .home-page .category-card small { font-size: 7px; }
+  .home-page .deal-banner { padding: 16px 14px; border-radius: 15px; gap: 8px; }
+  .home-page .deal-banner > div:first-child { max-width: 62%; }
+  .home-page .deal-banner strong { font-size: 18px; line-height: 1.2; }
+  .home-page .deal-banner p { font-size: 9px; }
+  .home-page .deal-count { min-width: 0; padding-left: 10px; }
+  .home-page .deal-count b { font-size: 11px; letter-spacing: .5px; white-space: nowrap; }
+  .home-page .deal-count a { font-size: 9px; padding: 6px 7px; }
+  .home-page .promo-card { min-height: 112px; padding: 16px; border-radius: 15px; }
+  .home-page .promo-card strong { font-size: 17px; }
+  .home-page .promo-art { font-size: 42px; }
+  .home-page .benefits > div { padding: 12px 8px; }
+  .home-page .benefits b { width: 32px; height: 32px; margin-bottom: 7px; }
+  .home-page .benefits strong { font-size: 9px; }
+  .home-page .benefits small { font-size: 8px; }
+}
+@media (max-width:380px) {
+  .home-page .hero-showcase { min-height: 270px; }
+  .home-page .showcase-card { width: 200px; }
+  .home-page .hero-product-image { height: 150px; }
+  .home-page .deal-banner { padding: 13px 10px; }
+  .home-page .deal-banner > div:first-child { max-width: 60%; }
+  .home-page .deal-banner strong { font-size: 16px; }
+  .home-page .deal-count { padding-left: 7px; }
+  .home-page .deal-count b { font-size: 10px; }
+}

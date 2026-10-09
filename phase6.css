@@ -1,0 +1,13 @@
+/* LEX MARKET PHASE 6 — FINAL MARKETPLACE + PRODUCTION POLISH */
+.skip-link{position:fixed;left:12px;top:10px;z-index:10000;padding:9px 12px;border-radius:9px;background:#24105f;color:#fff;font-weight:800;font-size:11px;transform:translateY(-150%);transition:.2s}.skip-link:focus{transform:none}
+.lex6-progress{position:fixed;left:0;top:0;height:3px;width:0;background:linear-gradient(90deg,#5421d6,#8a59f5);z-index:10001;transition:width .18s ease}
+.lex6-page-enter{opacity:0;transform:translateY(5px)}.lex6-page-ready{opacity:1;transform:none;transition:opacity .22s ease,transform .22s ease}
+.lex6-status{position:fixed;left:50%;bottom:82px;transform:translate(-50%,12px);padding:9px 13px;border-radius:999px;background:#24105f;color:#fff;font-size:10px;font-weight:800;box-shadow:0 10px 28px rgba(36,16,95,.22);z-index:999;opacity:0;pointer-events:none;transition:.2s}.lex6-status.show{opacity:1;transform:translate(-50%,0)}.lex6-status.offline{background:#8a2635}
+.lex6-top{position:fixed;right:18px;bottom:88px;width:38px;height:38px;border:1px solid #e3dfef;border-radius:50%;background:#fff;color:#5421d6;box-shadow:0 8px 24px rgba(30,20,70,.12);display:grid;place-items:center;font-size:17px;font-weight:900;opacity:0;pointer-events:none;transform:translateY(8px);transition:.2s;z-index:88}.lex6-top.show{opacity:1;pointer-events:auto;transform:none}
+.lex6-tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.lex6-tools button,.lex6-tools a{border:1px solid var(--lex-line,#e7e5ef);background:#fff;color:#39354a;border-radius:9px;padding:8px 10px;font-size:10px;font-weight:800;text-decoration:none}.lex6-tools button:hover,.lex6-tools a:hover{border-color:#cfc5f6;color:#5421d6}
+.lex6-copy{display:inline-flex;align-items:center;gap:6px}
+.lex6-live{display:inline-flex;align-items:center;gap:6px;color:#3c8b62;font-size:9px;font-weight:800}.lex6-live i{width:7px;height:7px;border-radius:50%;background:#42a86f;display:inline-block;box-shadow:0 0 0 4px rgba(66,168,111,.12)}
+.lex6-offline-note{display:none;margin:10px 0;padding:10px 12px;border-radius:10px;background:#fff3f4;border:1px solid #ffd6db;color:#8a2635;font-size:10px;font-weight:700}.lex6-offline-note.show{display:block}
+.lex6-image-fallback{display:grid!important;place-items:center!important;background:#f3f0f8!important;color:#8c879b!important;font-size:25px!important}
+@media(max-width:640px){.lex6-top{right:12px;bottom:82px}.lex6-tools{gap:6px}.lex6-tools button,.lex6-tools a{font-size:9px;padding:8px}.lex6-status{bottom:78px}}
+@media(prefers-reduced-motion:reduce){.lex6-page-enter,.lex6-page-ready,.lex6-top,.lex6-status{transition:none}}

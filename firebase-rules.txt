@@ -1,0 +1,204 @@
+LEX MARKET — FIRESTORE SECURITY RULES (HARDENED)
+
+Paste the rules below into Firebase Console > Firestore Database > Rules, then click Publish.
+
+These rules protect the current LEX Market customer, seller, admin, product, order and seller-order flows.
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    // Admin access is tied to the dedicated admin account email.
+    // This avoids the recursive users/{uid} permission check that can cause
+    // 'Missing or insufficient permissions' when an admin queries the users collection.
+    function isAdmin() {
+      return signedIn() && request.auth.token.email == 'omonigoalex@gmail.com';
+    }
+
+    function isSeller() {
+      return signedIn() &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'seller';
+    }
+
+    match /users/{userId} {
+      // A newly authenticated user can only create their own customer profile.
+      allow create: if signedIn()
+        && request.auth.uid == userId
+        && request.resource.data.role == 'customer';
+
+      // Customers can read their own profile. Admins can read all profiles.
+      allow read: if signedIn()
+        && (request.auth.uid == userId || isAdmin());
+
+      // Admin can manage roles. A normal user cannot promote themselves.
+      // Normal users may only change basic profile fields and must keep their role.
+      allow update: if isAdmin()
+        || (
+          signedIn()
+          && request.auth.uid == userId
+          && request.resource.data.role == resource.data.role
+          && request.resource.data.diff(resource.data).affectedKeys()
+              .hasOnly(['name', 'email', 'phone', 'updatedAt'])
+        );
+
+      allow delete: if isAdmin();
+    }
+
+    match /sellerRequests/{requestId} {
+      // Customers may submit only their own pending application.
+      allow create: if signedIn()
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.status == 'pending';
+
+      // Applicant sees their own request; admin sees all requests.
+      allow read: if signedIn()
+        && (resource.data.uid == request.auth.uid || isAdmin());
+
+      // Only admin can approve/reject applications.
+      allow update, delete: if isAdmin();
+    }
+
+    match /products/{productId} {
+      // Public catalog can read products; UI should display approved products only.
+      allow read: if true;
+
+      // Only approved sellers can create products, and every new product starts unapproved.
+      allow create: if isSeller()
+        && request.resource.data.sellerId == request.auth.uid
+        && request.resource.data.approved == false;
+
+      // Admin can manage all product fields.
+      // Sellers can edit/delete only their own products and cannot change approval fields.
+      allow update: if isAdmin()
+        || (
+          isSeller()
+          && resource.data.sellerId == request.auth.uid
+          && request.resource.data.sellerId == resource.data.sellerId
+          && request.resource.data.approved == resource.data.approved
+          && request.resource.data.approvalStatus == resource.data.approvalStatus
+          && request.resource.data.diff(resource.data).affectedKeys()
+              .hasOnly([
+                'name', 'price', 'oldPrice', 'category', 'stock',
+                'image', 'description', 'variants', 'sellerName', 'updatedAt'
+              ])
+        );
+
+      allow delete: if isAdmin()
+        || (isSeller() && resource.data.sellerId == request.auth.uid);
+    }
+
+    match /sellerOrders/{sellerOrderId} {
+      // A customer can create a seller-order only as part of one of their own
+      // existing parent orders. This blocks arbitrary users from injecting orders.
+      allow create: if signedIn()
+        && request.resource.data.customerId == request.auth.uid
+        && request.resource.data.sellerId is string
+        && request.resource.data.parentOrderId is string
+        && exists(/databases/$(database)/documents/orders/$(request.resource.data.parentOrderId))
+        && get(/databases/$(database)/documents/orders/$(request.resource.data.parentOrderId)).data.customerId == request.auth.uid
+        && request.resource.data.orderId == get(/databases/$(database)/documents/orders/$(request.resource.data.parentOrderId)).data.orderId;
+
+      allow read: if signedIn()
+        && (
+          request.auth.uid == resource.data.customerId
+          || request.auth.uid == resource.data.sellerId
+          || isAdmin()
+        );
+
+      // Sellers can change only fulfilment status/timestamp.
+      allow update: if isAdmin()
+        || (
+          isSeller()
+          && resource.data.sellerId == request.auth.uid
+          && request.resource.data.diff(resource.data).affectedKeys()
+              .hasOnly(['status', 'updatedAt'])
+        );
+
+      allow delete: if isAdmin();
+    }
+
+
+    // PHASE 7 — verified customer reviews.
+    match /reviews/{reviewId} {
+      allow read: if true;
+      allow create: if signedIn()
+        && request.resource.data.customerId == request.auth.uid
+        && request.resource.data.verifiedPurchase == true
+        && request.resource.data.rating >= 1
+        && request.resource.data.rating <= 5
+        && request.resource.data.orderId is string
+        && request.resource.data.firestoreOrderId is string
+        && exists(/databases/$(database)/documents/orders/$(request.resource.data.firestoreOrderId))
+        && get(/databases/$(database)/documents/orders/$(request.resource.data.firestoreOrderId)).data.customerId == request.auth.uid
+        && get(/databases/$(database)/documents/orders/$(request.resource.data.firestoreOrderId)).data.status == 'Delivered';
+      allow update, delete: if signedIn() && request.auth.uid == resource.data.customerId;
+    }
+
+    match /cancellationRequests/{requestId} {
+      allow create: if signedIn() && request.resource.data.customerId == request.auth.uid;
+      allow read: if signedIn() && (resource.data.customerId == request.auth.uid || isAdmin());
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /returnRequests/{requestId} {
+      allow create: if signedIn() && request.resource.data.customerId == request.auth.uid;
+      allow read: if signedIn() && (resource.data.customerId == request.auth.uid || isAdmin());
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /orderIssues/{issueId} {
+      allow create: if signedIn() && request.resource.data.customerId == request.auth.uid;
+      allow read: if signedIn() && (resource.data.customerId == request.auth.uid || isAdmin());
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /supportTickets/{ticketId} {
+      allow create: if signedIn() && request.resource.data.customerId == request.auth.uid;
+      allow read: if signedIn() && (resource.data.customerId == request.auth.uid || isAdmin());
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // PHASE 9 — product moderation reports.
+    match /productReports/{reportId} {
+      allow create: if signedIn() && request.resource.data.customerId == request.auth.uid;
+      allow read: if signedIn() && (resource.data.customerId == request.auth.uid || isAdmin());
+      allow update, delete: if isAdmin();
+    }
+
+    match /addresses/{addressId} {
+      allow create: if signedIn()
+        && request.resource.data.customerId == request.auth.uid;
+
+      allow read: if signedIn()
+        && (resource.data.customerId == request.auth.uid || isAdmin());
+
+      allow update, delete: if signedIn()
+        && (resource.data.customerId == request.auth.uid || isAdmin());
+    }
+
+    match /orders/{orderId} {
+      // Customers can create only their own orders.
+      allow create: if signedIn()
+        && request.resource.data.customerId == request.auth.uid;
+
+      // Customers see their own orders; admins see all orders.
+      // Seller fulfilment is handled through sellerOrders, not by exposing parent orders.
+      allow read: if signedIn()
+        && (
+          resource.data.customerId == request.auth.uid
+          || isAdmin()
+        );
+
+      // Only admin can change the parent order.
+      allow update, delete: if isAdmin();
+    }
+  }
+}

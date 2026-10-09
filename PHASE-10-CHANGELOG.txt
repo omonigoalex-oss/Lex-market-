@@ -1,0 +1,24 @@
+LEX MARKET — PHASE 10
+Final Marketplace Features & Polish
+
+Added:
+- Advanced product search and filtering: text, price range, rating, stock and sorting.
+- Product variants support through seller product variant JSON and customer selection.
+- Variant-aware cart entries.
+- Recently viewed products and improved recommendations.
+- Seller storefront links from product pages.
+- Mobile sticky product add-to-cart action.
+- Settings & Preferences page.
+- Reduced-motion, compact-mode and notification preferences.
+- Back-to-top control and image loading/performance refinements.
+- Consistent Settings navigation across pages.
+- Updated PWA service-worker shell/cache version.
+- Firestore seller product rules expanded for variants.
+
+Testing status:
+- JavaScript syntax and archive integrity checked.
+- Full browser/Firebase end-to-end testing intentionally left for the final testing stage.
+
+PATCH — Badge visibility fix
+- Cart and Wishlist count badges are now hidden when their count is 0.
+- Prevents empty 0 badges from appearing in the header/mobile navigation.

@@ -1,0 +1,16 @@
+LEX MARKET — PHASE 8
+====================
+Orders & Support
+
+Added:
+1. Order cancellation request flow for eligible orders.
+2. Return / refund request flow for delivered orders.
+3. Order issue reporting for delivery, payment, product, seller and other issues.
+4. Dedicated LEX Support Center page with support tickets.
+5. Order-specific support links from tracking.
+6. Request history/status display on the tracking page.
+7. Improved order-support timeline/actions while preserving live seller tracking.
+8. Firestore collections and customer/admin security rules for cancellationRequests, returnRequests, orderIssues and supportTickets.
+9. Mobile-responsive Phase 8 styling.
+
+Full browser/Firebase end-to-end testing is intentionally deferred until the planned testing phase.

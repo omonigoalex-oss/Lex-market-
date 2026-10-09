@@ -1,0 +1,65 @@
+/* LEX Market Phase 12 — Categories page visual refinement.
+   Scoped to .categories-page so shared layout and shopping logic stay unchanged. */
+.categories-page main > .section {
+  padding-top: 34px;
+  padding-bottom: 58px;
+  background: linear-gradient(180deg, #faf8ff 0%, #fff 280px);
+}
+.categories-page .heading {
+  align-items: center;
+  margin-bottom: 23px;
+  padding: 27px 28px;
+  border: 1px solid #e8e0fb;
+  border-radius: 21px;
+  background: radial-gradient(ellipse at 100% 0%, rgba(183,154,255,.24), transparent 42%), linear-gradient(115deg,#f3edff 0%,#fff 72%);
+  box-shadow: 0 9px 26px rgba(57,30,120,.055);
+}
+.categories-page .heading .eyebrow { color: #7044d1; letter-spacing: 1.8px; font-weight: 900; }
+.categories-page .heading h2 { margin-top: 6px; font-size: clamp(27px,3vw,36px); letter-spacing: -1.2px; }
+.categories-page .heading > a { padding: 11px 14px; border: 1px solid #ded2fb; border-radius: 999px; background: #fff; white-space: nowrap; }
+.categories-page .filters { gap: 9px; margin-bottom: 24px; padding: 2px 0 5px; }
+.categories-page .filter { padding: 10px 17px; border-color: #e8e3f1; box-shadow: 0 3px 10px rgba(42,24,90,.035); transition: background .18s,border-color .18s,transform .18s; }
+.categories-page .filter:hover { transform: translateY(-1px); border-color: #c8b7f5; }
+.categories-page .filter.active { box-shadow: 0 5px 13px rgba(75,31,199,.18); }
+.categories-page .category-page { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 17px; }
+.categories-page .category-page > a {
+  position: relative;
+  min-height: 205px;
+  padding: 24px;
+  overflow: hidden;
+  border: 1px solid #e9e5f2;
+  border-radius: 20px;
+  box-shadow: 0 7px 22px rgba(42,24,90,.055);
+  transition: transform .2s,border-color .2s,box-shadow .2s;
+}
+.categories-page .category-page > a::after { content: ""; position: absolute; width: 125px; height: 125px; right: -38px; top: -42px; border-radius: 50%; background: #f3efff; opacity: .85; pointer-events: none; }
+.categories-page .category-page > a:nth-child(2n)::after { background: #edf5ff; }
+.categories-page .category-page > a:nth-child(3n)::after { background: #fff1e8; }
+.categories-page .category-page > a:hover { transform: translateY(-3px); border-color: #cfc0f7; box-shadow: 0 14px 30px rgba(55,28,120,.12); }
+.categories-page .category-page b { position: relative; z-index: 1; width: 58px; height: 58px; margin-bottom: 17px; border: 1px solid rgba(95,61,180,.07); border-radius: 17px; background: #f1ebff; font-size: 30px; }
+.categories-page .category-page > a:nth-child(2n) b { background: #edf5ff; }
+.categories-page .category-page > a:nth-child(3n) b { background: #fff0e8; }
+.categories-page .category-page h3 { font-size: 17px; letter-spacing: -.25px; }
+.categories-page .category-page p { margin: 7px 0 18px; color: #777283; font-size: 12px; }
+.categories-page .category-page span { display: inline-flex; align-items: center; gap: 5px; padding: 8px 11px; border-radius: 8px; background: #f5f1ff; font-size: 10px; }
+@media (max-width: 900px) {
+  .categories-page .category-page { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+  .categories-page .category-page > a { min-height: 180px; padding: 18px; }
+}
+@media (max-width: 600px) {
+  .categories-page main > .section { padding-top: 20px; padding-bottom: 32px; }
+  .categories-page .heading { align-items: flex-start; gap: 13px; margin-bottom: 17px; padding: 19px 16px; border-radius: 16px; }
+  .categories-page .heading h2 { font-size: 23px; line-height: 1.1; }
+  .categories-page .heading .eyebrow { font-size: 8px; letter-spacing: 1.3px; }
+  .categories-page .heading > a { align-self: center; padding: 8px 10px; font-size: 9px; }
+  .categories-page .filters { gap: 7px; margin-bottom: 17px; }
+  .categories-page .filter { padding: 9px 13px; font-size: 10px; }
+  .categories-page .category-page { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
+  .categories-page .category-page > a { min-height: 165px; padding: 13px; border-radius: 15px; }
+  .categories-page .category-page > a::after { width: 90px; height: 90px; right: -32px; top: -30px; }
+  .categories-page .category-page b { width: 43px; height: 43px; margin-bottom: 12px; border-radius: 13px; font-size: 23px; }
+  .categories-page .category-page h3 { font-size: 12px; line-height: 1.25; }
+  .categories-page .category-page p { min-height: 24px; margin: 5px 0 11px; font-size: 9px; line-height: 1.35; }
+  .categories-page .category-page span { padding: 7px 8px; font-size: 8px; }
+}
+@media (prefers-reduced-motion: reduce) { .categories-page .category-page > a,.categories-page .filter { transition: none; } }

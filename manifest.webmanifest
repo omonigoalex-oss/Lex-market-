@@ -1,0 +1,11 @@
+{
+  "name": "LEX Market",
+  "short_name": "LEX Market",
+  "description": "Everything You Need. One Place.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f7f6fb",
+  "theme_color": "#5b2be0",
+  "orientation": "portrait-primary",
+  "categories": ["shopping", "marketplace"]
+}

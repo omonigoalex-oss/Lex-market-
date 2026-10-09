@@ -1,0 +1,7 @@
+LEX Market Phase 11 — Header & Settings Fix v2
+
+Mobile header: Alerts, Notifications and Compare are hidden from the top header on small screens. They remain available under Account > Shopping Tools.
+
+Account: Settings was removed from Shopping Tools because Settings is already available in the footer, preventing the duplicate Settings entry.
+
+Service-worker cache version bumped to force the updated JS/CSS to load.

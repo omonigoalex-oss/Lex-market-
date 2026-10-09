@@ -1,0 +1,19 @@
+LEX MARKET — PHASE 7
+====================
+Trust & Customer Experience
+
+Added together:
+1. Product reviews and ratings stored in Firestore.
+2. Verified-purchase review eligibility based on customer orders.
+3. Promo codes: LEX10, WELCOME5, LEX2000 with minimum-order validation.
+4. Saved delivery addresses on the device (up to 5) with one-tap checkout autofill.
+5. Detailed order receipt on confirmation page with print support.
+6. Order notifications/alerts with unread badge and status-change alerts.
+7. Phase 7 styling and mobile responsive UI.
+
+Firebase setup:
+Publish the updated firebase-rules.txt in Firebase Console > Firestore Database > Rules.
+The Phase 7 reviews rule is already placed inside the service/database rules block.
+
+Note: Phase 7 has been syntax-checked and the ZIP archive has been integrity-tested.
+Full browser/Firebase end-to-end testing should be done before moving to Phase 8.

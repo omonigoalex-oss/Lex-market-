@@ -1,0 +1,40 @@
+LEX MARKET — PHASE 3 BUILD
+
+1. Discovery
+   - Smart search scoring
+   - Search suggestions
+   - Recent searches
+
+2. Product filtering
+   - Category
+   - Min/max price
+   - Minimum rating
+   - Sort by featured/newest/price/rating/discount
+   - Grid/list view
+
+3. Deals
+   - Only discounted products are shown on Flash Deals
+   - Highest discounts appear first
+   - Persistent 12-hour countdown
+
+4. Shopping UX
+   - Cart badge synchronization
+   - Wishlist count badge
+   - Stock warnings
+   - Out-of-stock button state
+   - Toast confirmations
+
+5. Product discovery
+   - Recently viewed products
+   - Dynamic category product counts
+   - Seller name surfaced on cards when available
+
+6. Firebase catalog bridge
+   - Approved seller products are merged into window.lexProducts
+   - Existing catalog records are updated rather than duplicated
+   - Catalog update event refreshes the Phase 3 UI
+
+7. Safety / preservation
+   - Existing Firebase auth, checkout, seller and admin files remain in place.
+   - firebase-catalog.js no longer maintains a second duplicate static catalog.
+   - No Paystack secret key was added.

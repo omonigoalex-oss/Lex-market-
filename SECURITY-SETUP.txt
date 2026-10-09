@@ -1,0 +1,60 @@
+LEX MARKET — SECURITY & PERMISSIONS SETUP
+
+This update hardens the Firestore permissions without changing the current LEX Market design.
+
+WHAT IS PROTECTED
+-----------------
+1. Customers
+   - Can create their own customer profile.
+   - Can read their own profile.
+   - Can edit only basic profile fields.
+   - Cannot change their role to seller/admin.
+
+2. Sellers
+   - Can create products only under their own seller ID.
+   - New products must start as approved:false.
+   - Can edit only normal product fields.
+   - Cannot approve their own products.
+   - Cannot change seller ownership.
+   - Can update only status/updatedAt on their seller orders.
+
+3. Admin
+   - Can manage users, seller requests, products and parent orders.
+   - Can approve/reject sellers and products.
+
+4. Orders
+   - Customers can create orders only for themselves.
+   - Customers can read only their own orders.
+   - Sellers use sellerOrders for fulfilment instead of editing parent orders.
+   - Only admins can edit/delete parent orders.
+
+5. Seller Orders
+   - A customer can create a seller-order only when its parent order already exists and belongs to that customer.
+   - Sellers can read only seller orders assigned to them.
+   - Sellers can change only fulfilment status and updatedAt.
+
+IMPORTANT
+---------
+After replacing your website files, you MUST also publish the rules from firebase-rules.txt in:
+Firebase Console > Firestore Database > Rules > Publish
+
+The website code alone cannot change Firestore security rules.
+
+TEST CHECKLIST
+--------------
+[ ] Customer can sign in.
+[ ] Customer can edit profile.
+[ ] Customer cannot change their role.
+[ ] Seller can add a product.
+[ ] Seller cannot approve their own product.
+[ ] Admin can approve a product.
+[ ] Approved product appears publicly.
+[ ] Seller can update seller-order status.
+[ ] Customer tracking receives seller status updates.
+[ ] Admin can update parent order status.
+[ ] Customer can still complete checkout.
+[ ] Paystack test checkout still works.
+
+NOTE
+----
+Paystack secret keys must never be placed in frontend files. The current Paystack setup is still a test/development integration and should receive server-side verification/webhooks before public production launch.

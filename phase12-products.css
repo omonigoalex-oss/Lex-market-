@@ -1,0 +1,127 @@
+/* LEX Market Phase 12 — Products page visual refinement.
+   Scoped to .products-page; does not change product rendering or shopping logic. */
+.products-page main > .section {
+  padding-top: 34px;
+  padding-bottom: 56px;
+  background: linear-gradient(180deg, #faf8ff 0%, #fff 230px);
+}
+.products-page .heading {
+  position: relative;
+  align-items: center;
+  margin-bottom: 22px;
+  padding: 25px 27px;
+  overflow: hidden;
+  border: 1px solid #e8e0fb;
+  border-radius: 20px;
+  background: radial-gradient(ellipse at 100% 0%, rgba(183,154,255,.24), transparent 42%), linear-gradient(115deg,#f4efff 0%,#fff 70%);
+  box-shadow: 0 9px 26px rgba(57,30,120,.055);
+}
+.products-page .heading .eyebrow { color: #7044d1; letter-spacing: 1.8px; }
+.products-page .heading h2 { margin-top: 5px; font-size: clamp(26px,3vw,34px); letter-spacing: -1.2px; }
+.products-page #resultCount {
+  flex: 0 0 auto;
+  padding: 9px 12px;
+  border: 1px solid #e7defa;
+  border-radius: 999px;
+  background: rgba(255,255,255,.86);
+  color: #6844b6;
+  font-size: 11px;
+  font-weight: 800;
+}
+.products-page .filters {
+  gap: 9px;
+  margin-bottom: 23px;
+  padding: 2px 1px 7px;
+  scrollbar-width: thin;
+  scrollbar-color: #d4c4f8 transparent;
+}
+.products-page .filter {
+  min-height: 39px;
+  padding: 10px 17px;
+  border-color: #e7e2f0;
+  background: #fff;
+  box-shadow: 0 3px 10px rgba(34,20,75,.035);
+  transition: color .18s ease, background .18s ease, border-color .18s ease, transform .18s ease, box-shadow .18s ease;
+}
+.products-page .filter.active {
+  background: linear-gradient(135deg,#4b1fc7,#7545e7);
+  border-color: transparent;
+  box-shadow: 0 7px 16px rgba(75,31,199,.22);
+}
+.products-page #productsContainer.grid {
+  grid-template-columns: repeat(4,minmax(0,1fr));
+  align-items: stretch;
+  gap: 18px;
+}
+.products-page #productsContainer .card {
+  border-color: #ece8f4;
+  border-radius: 18px;
+  box-shadow: 0 7px 22px rgba(35,22,80,.055);
+  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+.products-page #productsContainer .pic { padding: 11px; }
+.products-page #productsContainer .product-photo {
+  height: 205px;
+  border: 1px solid #f0edf7;
+  border-radius: 13px;
+  background: linear-gradient(145deg,#faf9fd,#f4f1fa);
+}
+.products-page #productsContainer .discount { left: 17px; top: 17px; padding: 5px 8px; }
+.products-page #productsContainer .heart {
+  width: 33px; height: 33px;
+  border-color: #e9e4f1;
+  box-shadow: 0 4px 12px rgba(27,15,58,.09);
+}
+.products-page #productsContainer .card-body { padding: 13px 14px 15px; }
+.products-page #productsContainer .card-body > small { color: #827a91; letter-spacing: .2px; }
+.products-page #productsContainer .card-body h3 { line-height: 1.4; }
+.products-page #productsContainer .price { flex-wrap: wrap; row-gap: 3px; }
+.products-page #productsContainer .add { min-height: 39px; border-radius: 10px; box-shadow: 0 5px 12px rgba(75,31,199,.12); }
+.products-page .empty {
+  margin-top: 12px;
+  padding: 42px 20px;
+  border: 1px dashed #d9ccef;
+  border-radius: 20px;
+  background: linear-gradient(145deg,#fbf9ff,#fff);
+  text-align: center;
+}
+.products-page .empty > div { font-size: 34px; margin-bottom: 8px; }
+.products-page .empty h2 { font-size: 21px; margin-bottom: 6px; }
+.products-page .empty p { color: #817b8d; font-size: 12px; }
+@media (hover:hover) and (min-width:761px) {
+  .products-page .filter:hover { transform: translateY(-1px); border-color: #cdbcf4; }
+  .products-page #productsContainer .card:hover { transform: translateY(-4px); border-color: #d8ccf5; box-shadow: 0 16px 30px rgba(46,23,105,.11); }
+  .products-page #productsContainer .add:hover { box-shadow: 0 8px 17px rgba(75,31,199,.23); }
+}
+@media (max-width:900px) {
+  .products-page #productsContainer.grid { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 14px; }
+  .products-page #productsContainer .product-photo { height: 185px; }
+}
+@media (max-width:640px) {
+  .products-page main > .section { padding-top: 20px; padding-bottom: 34px; }
+  .products-page .heading { align-items: flex-start; padding: 18px 16px; margin-bottom: 16px; border-radius: 16px; }
+  .products-page .heading h2 { font-size: 25px; }
+  .products-page #resultCount { margin-top: 15px; padding: 7px 9px; font-size: 9px; }
+  .products-page .filters { gap: 7px; margin-bottom: 15px; }
+  .products-page .filter { min-height: 36px; padding: 9px 13px; font-size: 10px; }
+  .products-page #productsContainer.grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
+  .products-page #productsContainer .pic { padding: 7px; }
+  .products-page #productsContainer .product-photo { height: clamp(130px,42vw,190px); border-radius: 10px; }
+  .products-page #productsContainer .discount { top: 12px; left: 12px; padding: 4px 5px; font-size: 8px; }
+  .products-page #productsContainer .heart { top: 11px; right: 11px; width: 29px; height: 29px; }
+  .products-page #productsContainer .card-body { padding: 10px 10px 12px; }
+  .products-page #productsContainer .card-body h3 { font-size: 12px; min-height: 34px; }
+  .products-page #productsContainer .price { gap: 5px; margin: 7px 0 10px; }
+  .products-page #productsContainer .price strong { font-size: 14px; }
+  .products-page #productsContainer .price del { font-size: 9px; }
+  .products-page #productsContainer .add { padding: 9px 5px; min-height: 36px; font-size: 10px; }
+}
+@media (max-width:360px) {
+  .products-page .heading { display: block; }
+  .products-page #resultCount { display: inline-flex; margin-top: 10px; }
+  .products-page #productsContainer .product-photo { height: 125px; }
+  .products-page #productsContainer .card-body h3 { font-size: 11px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .products-page .filter, .products-page #productsContainer .card { transition: none; }
+}

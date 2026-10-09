@@ -1,0 +1,18 @@
+LEX MARKET — PHASE 5
+Personalization, Notifications & App Experience
+
+WHAT'S NEW
+- Personalized "Picked for you" home section based on browsing/category activity.
+- Local shopping-interest signals for lightweight recommendations.
+- Wishlist alerts for low-stock items and detected price drops.
+- New Alerts panel in the header.
+- Improved cart/wishlist badges across desktop and mobile navigation.
+- Account shopping-activity panel with recent views, saved items and interests.
+- PWA manifest for app-like installation on supported browsers.
+- Service worker with network-first caching and offline fallback.
+- Existing Phase 1–4 Firebase, seller, admin, checkout, cart, wishlist and compare functionality preserved.
+
+NOTES
+- Personalization is stored locally in the browser; no new customer profile fields are required.
+- Price alerts compare a browser's saved catalog price snapshot against later catalog prices.
+- PWA installation is browser/device dependent and normally works when served over HTTPS (for example GitHub Pages).

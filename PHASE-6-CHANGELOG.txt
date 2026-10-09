@@ -1,0 +1,31 @@
+LEX MARKET — PHASE 6
+Final Marketplace + Production Polish
+
+WHAT'S NEW
+- Global page transition polish for a smoother app-like navigation feel.
+- Skip-to-content accessibility control and improved search/button labels.
+- Scroll progress indicator.
+- Back-to-top control.
+- Online/offline status handling with a clear offline notice.
+- Safe image loading and visual fallback when product images fail.
+- Dynamic footer year.
+- Deep-link support for ?q= / ?search= and ?category= navigation where matching controls exist.
+- Order confirmation tools: copy order ID and continue shopping shortcut.
+- Lightweight live/online indicator in the header.
+- Reduced-motion friendly transitions.
+- Global error logging hooks that do not expose internal errors to customers.
+
+PRESERVED
+- Firebase authentication/profile system.
+- Customer cart, checkout, orders and tracking.
+- Paystack test integration.
+- Seller application and Seller Centre.
+- Admin dashboard and product/seller approval.
+- Phase 3 search/filter/deals/wishlist improvements.
+- Phase 4 quick view/compare/buy-now improvements.
+- Phase 5 personalization/alerts/PWA improvements.
+
+PRODUCTION NOTES
+- Paystack secret keys must never be placed in frontend files.
+- Before accepting real payments, add server-side Paystack transaction verification/webhooks.
+- Firestore rules should remain published in Firebase Console.

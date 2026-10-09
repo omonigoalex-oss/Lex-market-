@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="description" content="Sign In / Create Account - LEX Market — Shop smart with LEX Market. Discover products, deals, checkout and order tracking."><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="theme-color" content="#5b2be0"><title>Sign In / Create Account - LEX Market</title><link rel="stylesheet" href="style.css"><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="phase6.css"><link rel="stylesheet" href="phase7.css"><link rel="stylesheet" href="phase8.css"><link rel="stylesheet" href="phase10.css"></head><body class="auth-page">
+<div class="topbar"><div class="wrap"><span>🔥 Welcome to LEX Market — Shop smarter, shop better.</span><div><a href="deals.html">Today's Deals</a><a href="contact.html">Help Center</a></div></div></div>
+<header><div class="wrap header-inner"><a class="logo" href="index.html"><b>LEX</b><span>MARKET</span></a><div class="search"><input id="searchInput" type="search" placeholder="Search for products, brands and more..."><button id="searchButton" aria-label="Search">⌕</button></div><div class="actions"><a href="wishlist.html">♡<small>Wishlist</small></a><a class="cart-link" href="cart.html">🛒<small>Cart</small></a><a href="account.html">♙<small>Account</small></a></div></div></header>
+<nav><div class="wrap nav"><a class="" href="index.html">Home</a><a class="" href="categories.html">Categories</a><a class="" href="deals.html">🔥 Deals</a><a class="" href="products.html">All Products</a><a class="" href="tracking.html">Track Order</a><a class="" href="seller.html">Sell on LEX</a><a class="" href="contact.html">Help</a></div></nav>
+<main><section class="section"><div class="wrap auth-wrap"><div class="auth-card"><div class="auth-brand"><span class="eyebrow">LEX MARKET</span><h1>Welcome back.</h1><p>Create an account or sign in to manage orders, wishlist and your marketplace profile.</p></div><div class="notice warning" id="firebaseNotice">Firebase is not connected yet. Add your Firebase Web config to <b>firebase-config.js</b> first.</div><div class="auth-tabs"><button class="auth-tab active" data-tab="signin">Sign In</button><button class="auth-tab" data-tab="signup">Create Account</button></div><form id="signinForm"><label>Email<input id="signinEmail" placeholder="you@example.com" required="" type="email"/></label><label>Password<input id="signinPassword" minlength="6" placeholder="••••••••" required="" type="password"/></label><button class="btn primary full" type="submit">Sign In</button><button class="btn full google-btn" id="googleSignIn" type="button">Continue with Google</button><div class="auth-divider"><span>or</span></div><button class="text-button" id="forgotPassword" type="button">Forgot password?</button></form><form class="hidden" id="signupForm"><label>Full Name<input id="signupName" placeholder="Your full name" required=""/></label><label>Phone<input id="signupPhone" inputmode="tel" placeholder="080..."/></label><label>Email<input id="signupEmail" placeholder="you@example.com" required="" type="email"/></label><label>Password<input id="signupPassword" minlength="6" placeholder="At least 6 characters" required="" type="password"/></label><button class="btn primary full" type="submit">Create Account</button><button class="btn full google-btn" id="googleSignUp" type="button">Continue with Google</button></form><p class="auth-message" id="authMessage"></p><p class="auth-back"><a href="index.html">← Back to LEX Market</a></p></div></div></section></main>
+<footer><div class="wrap footer-main"><div class="footer-brand"><b>LEX MARKET</b><p>Shop Smart. Live Better.</p></div><div class="footer-links"><h3>CUSTOMER CARE</h3><a href="contact.html">Help Center</a><a href="tracking.html">Track Order</a><a href="contact.html">Returns & Refunds</a><a href="contact.html">Contact Us</a></div><div class="footer-links"><h3>ABOUT LEX</h3><a href="index.html">About LEX Market</a><a href="contact.html">Terms & Conditions</a><a href="contact.html">Privacy Policy</a><a href="seller.html">Sell on LEX</a></div><div class="footer-links"><h3>CONNECT</h3><a href="contact.html">Facebook</a><a href="contact.html">Instagram</a><a href="contact.html">X</a></div></div><div class="wrap footer-bottom"><span>© 2026 LEX Market. All rights reserved.</span><span>Made with ❤️ in Nigeria</span></div></footer>
+<div class="mobile-nav"><a class="" href="index.html">⌂<small>Home</small></a><a class="" href="categories.html">▦<small>Categories</small></a><a class="" href="deals.html">◇<small>Deals</small></a><a class="cart-link" href="cart.html">🛒<small>Cart</small></a><a class="" href="account.html">♙<small>Account</small></a></div>
+<script type="module" src="firebase-app.js"></script><script type="module" src="firebase-catalog.js"></script><script src="script.js"></script><script src="phase3.js"></script><script src="phase4.js"></script><script src="phase5.js"></script><script type="module">
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, updateProfile, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js';
+import { doc, setDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js';
+import './firebase-app.js';
+const $=s=>document.querySelector(s); const msg=$('#authMessage');
+let authBusy=false;
+function message(text,ok=false){msg.textContent=text;msg.className='auth-message '+(ok?'success':'error')}
+function ready(){return window.lexFirebase?.configured&&window.lexFirebase?.auth&&window.lexFirebase?.db}
+function switchTab(tab){document.querySelectorAll('.auth-tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));$('#signinForm').classList.toggle('hidden',tab!=='signin');$('#signupForm').classList.toggle('hidden',tab!=='signup');message('')}
+document.querySelectorAll('.auth-tab').forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));
+window.addEventListener('lex-firebase-unconfigured',()=>{$('#firebaseNotice').classList.remove('hidden')});
+window.addEventListener('lex-auth-changed',e=>{
+  if(e.detail.user && !authBusy) location.href='account.html';
+});
+$('#signinForm').onsubmit=async e=>{e.preventDefault();if(!ready())return message('Firebase is not connected. Add your Firebase config first.');try{await signInWithEmailAndPassword(window.lexFirebase.auth,$('#signinEmail').value.trim(),$('#signinPassword').value);message('Signed in successfully.',true)}catch(err){message(cleanError(err))}};
+$('#signupForm').onsubmit=async e=>{
+  e.preventDefault();
+  if(!ready()) return message('Firebase is not connected. Add your Firebase config first.');
+  const name=$('#signupName').value.trim(), phone=$('#signupPhone').value.trim(), email=$('#signupEmail').value.trim(), password=$('#signupPassword').value;
+  authBusy=true;
+  try{
+    const cred=await createUserWithEmailAndPassword(window.lexFirebase.auth,email,password);
+    await updateProfile(cred.user,{displayName:name});
+    await setDoc(doc(window.lexFirebase.db,'users',cred.user.uid),{
+      name,email,phone,role:'customer',createdAt:serverTimestamp(),updatedAt:serverTimestamp()
+    },{merge:true});
+    message('Account created successfully. Your profile has been saved.',true);
+    setTimeout(()=>location.href='account.html',400);
+  }catch(err){
+    authBusy=false;
+    message(cleanError(err));
+  }
+};
+async function googleAuth(){
+  if(!ready()) return message('Firebase is not connected. Add your Firebase config first.');
+  authBusy=true;
+  try{
+    const provider=new GoogleAuthProvider();
+    const cred=await signInWithPopup(window.lexFirebase.auth,provider);
+    const existing=await import('https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js');
+    const profileRef=existing.doc(window.lexFirebase.db,'users',cred.user.uid);
+    const profileSnap=await existing.getDoc(profileRef);
+    if(!profileSnap.exists()){
+      await existing.setDoc(profileRef,{
+        name:cred.user.displayName||'LEX Customer', email:cred.user.email||'', phone:'', role:'customer', createdAt:existing.serverTimestamp(), updatedAt:existing.serverTimestamp()
+      },{merge:true});
+    }
+    message('Signed in with Google.',true);
+    setTimeout(()=>location.href='account.html',200);
+  }catch(err){authBusy=false;message(cleanError(err))}
+}
+$('#googleSignIn').onclick=googleAuth;
+$('#googleSignUp').onclick=googleAuth;
+
+$('#forgotPassword').onclick=async()=>{if(!ready())return message('Firebase is not connected yet.');const email=$('#signinEmail').value.trim();if(!email)return message('Enter your email first.');try{await sendPasswordResetEmail(window.lexFirebase.auth,email);message('Password reset email sent.',true)}catch(err){message(cleanError(err))}};
+function cleanError(err){const map={'auth/invalid-credential':'Email or password is incorrect.','auth/email-already-in-use':'That email is already registered.','auth/invalid-email':'Please enter a valid email.','auth/weak-password':'Password must be at least 6 characters.','auth/too-many-requests':'Too many attempts. Try again later.','auth/popup-closed-by-user':'Google sign-in was cancelled.','auth/unauthorized-domain':'This website domain is not authorized in Firebase. Add it under Authentication → Settings → Authorized domains.','permission-denied':'Firestore denied the profile write. Publish the rules from firebase-rules.txt.'};return map[err.code]||err.message||'Something went wrong.'}
+</script>
+<script src="phase6.js"></script><script src="phase7.js"></script><script src="phase8.js"></script><script src="phase10.js"></script></body></html>

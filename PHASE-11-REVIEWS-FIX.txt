@@ -1,0 +1,6 @@
+LEX Market Product Reviews Fix
+- Added visible Reviews & Ratings section on product details.
+- Added verified-purchase review form for delivered orders.
+- Added Firestore review creation/loading.
+- Reviews display immediately after submission.
+- Bumped service-worker cache so the new script loads.

@@ -1,0 +1,38 @@
+/* LEX Market Phase 10 — Final Marketplace Features & Polish */
+.p10-tools{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin:16px 0;padding:14px;background:#fff;border:1px solid #ece8f6;border-radius:18px;box-shadow:0 8px 24px rgba(52,31,100,.05)}
+.p10-tools input,.p10-tools select{width:100%;min-width:0;padding:11px 12px;border:1px solid #ddd6ef;border-radius:12px;background:#fff;font:inherit;color:#222}
+.p10-tools .p10-search-wide{grid-column:span 2}.p10-check{display:flex;align-items:center;gap:7px;padding:0 4px;font-size:.88rem;font-weight:700;color:#4b1fc7}.p10-check input{width:auto}
+.p10-reset{border:0;border-radius:12px;background:#f0ebff;color:#4b1fc7;font-weight:800;cursor:pointer;padding:11px 12px}
+.p10-result-note{font-size:.86rem;color:#6d6878;margin:8px 0 16px}.p10-recommendations{margin-top:28px}.p10-recommendations .heading{margin-bottom:14px}
+.p10-variant-box{margin:20px 0;padding:16px;border:1px solid #e8e1f8;border-radius:18px;background:#fbfaff}.p10-variant-box h3{margin:0 0 12px}.p10-variant-group{margin:12px 0}.p10-variant-group label{display:block;font-weight:800;font-size:.86rem;margin-bottom:7px}.p10-variant-options{display:flex;flex-wrap:wrap;gap:8px}.p10-option{border:1px solid #d9d0ee;background:#fff;color:#333;border-radius:999px;padding:8px 12px;font-weight:700;cursor:pointer}.p10-option.active{background:#4b1fc7;color:#fff;border-color:#4b1fc7}.p10-variant-note{font-size:.8rem;color:#777;margin-top:8px}
+.p10-recent{margin:12px 0;color:#777;font-size:.82rem}.p10-seller-link{display:inline-flex;align-items:center;gap:6px;margin-top:8px;color:#4b1fc7;font-weight:800;text-decoration:none}.p10-sticky-buy{display:none}
+.p10-settings{max-width:760px;margin:auto}.p10-setting-card{background:#fff;border:1px solid #ece8f6;border-radius:20px;padding:20px;margin:14px 0;box-shadow:0 8px 24px rgba(52,31,100,.05)}.p10-setting-row{display:flex;justify-content:space-between;gap:16px;align-items:center;padding:15px 0;border-bottom:1px solid #f0edf5}.p10-setting-row:last-child{border-bottom:0}.p10-setting-row b{display:block}.p10-setting-row small{color:#777;display:block;margin-top:4px}.p10-switch{width:48px;height:28px;border-radius:999px;border:0;background:#d9d5e2;position:relative;cursor:pointer;flex:0 0 auto}.p10-switch:after{content:'';position:absolute;width:22px;height:22px;border-radius:50%;background:#fff;top:3px;left:3px;transition:.2s;box-shadow:0 1px 4px rgba(0,0,0,.2)}.p10-switch.on{background:#4b1fc7}.p10-switch.on:after{left:23px}
+.p10-toast{position:fixed;left:50%;bottom:88px;transform:translate(-50%,20px);background:#24133f;color:#fff;padding:11px 15px;border-radius:12px;font-weight:700;z-index:9999;opacity:0;pointer-events:none;transition:.2s}.p10-toast.show{opacity:1;transform:translate(-50%,0)}
+.p10-backtop{position:fixed;right:18px;bottom:88px;width:42px;height:42px;border:0;border-radius:50%;background:#4b1fc7;color:#fff;font-size:18px;box-shadow:0 8px 20px rgba(75,31,199,.25);display:none;z-index:1000}.p10-backtop.show{display:block}
+.p10-skeleton{min-height:180px;border-radius:18px;background:linear-gradient(90deg,#f4f1f8 25%,#fff 50%,#f4f1f8 75%);background-size:200% 100%;animation:p10shine 1.2s infinite}@keyframes p10shine{to{background-position:-200% 0}}
+@media(max-width:900px){.p10-tools{grid-template-columns:repeat(3,minmax(0,1fr))}.p10-tools .p10-search-wide{grid-column:span 3}}
+@media(max-width:620px){.p10-tools{grid-template-columns:1fr 1fr;padding:12px}.p10-tools .p10-search-wide{grid-column:span 2}.p10-tools .p10-reset{grid-column:span 2}.p10-sticky-buy{display:flex;position:fixed;left:10px;right:10px;bottom:74px;z-index:900;background:#fff;border:1px solid #e6e0f0;border-radius:16px;padding:9px;box-shadow:0 10px 28px rgba(30,20,60,.18);align-items:center;justify-content:space-between;gap:10px}.p10-sticky-buy strong{color:#35158f}.p10-sticky-buy button{border:0;border-radius:11px;background:#4b1fc7;color:#fff;padding:11px 14px;font-weight:800}.p10-backtop{bottom:135px;right:12px}.p10-setting-row{align-items:flex-start}}
+@media(prefers-reduced-motion:reduce){.p10-toast,.p10-switch:after{transition:none}.p10-skeleton{animation:none}}
+
+/* Mobile header cleanup — Alerts, Notifications and Compare live in Account. */
+.p10-account-tools{display:none;margin-top:12px;width:100%;padding-top:12px;border-top:1px solid #eeeaf5}
+.p10-tools-title{display:block;font-size:10px;font-weight:900;color:#777;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.p10-tools-buttons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.p10-tools-buttons button,
+.p10-tools-buttons a{display:flex;align-items:center;justify-content:center;min-height:40px;padding:9px 8px;border:1px solid #e1dcef;border-radius:10px;background:#fff;color:#4b1fc7;font-size:11px;font-weight:800;text-decoration:none;cursor:pointer}
+@media(max-width:620px){
+  header .actions .p5-notify-btn,
+  header .actions #p7Bell,
+  header .actions [data-compare-link]{display:none!important}
+  .p10-account-tools{display:block}
+}
+
+/* Account shopping tools */
+.shopping-tools-card{grid-column:1 / -1}
+.shopping-tools-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}
+.shopping-tools-actions .btn{min-width:150px;text-align:center}
+@media(max-width:700px){
+  .shopping-tools-card{grid-column:auto}
+  .shopping-tools-actions{flex-direction:column}
+  .shopping-tools-actions .btn{width:100%;min-width:0}
+}

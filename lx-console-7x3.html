@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Admin Dashboard - LEX Market — Shop smart with LEX Market. Discover products, deals, checkout and order tracking."><meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Admin Dashboard - LEX Market</title>
+  <link rel="stylesheet" href="style.css"><link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="phase6.css"><link rel="stylesheet" href="phase7.css"><link rel="stylesheet" href="phase8.css"><link rel="stylesheet" href="phase9.css"><link rel="stylesheet" href="phase10.css"></head>
+<body>
+<header>
+  <div class="wrap header-inner">
+    <a class="logo" href="index.html"><b>LEX</b><span>MARKET</span></a>
+    <div class="actions">
+      <a href="index.html">🏠<small>Store</small></a>
+      <a href="seller.html">🏪<small>Seller</small></a>
+      <a href="account.html">👤<small>Account</small></a>
+    </div>
+  </div>
+</header>
+
+<main>
+<section class="section">
+  <div class="wrap">
+    <div class="heading">
+      <div>
+        <span class="eyebrow">CONTROL CENTER</span>
+        <h2>LEX Market Control Center</h2>
+      </div>
+    </div>
+    <p class="section-lead">Manage customers, seller applications, products and orders from one secure dashboard.</p>
+
+    <div id="adminMessage" class="admin-message">Checking admin access...</div>
+    <div id="adminContainer" class="admin-dashboard" hidden></div>
+  </div>
+</section>
+</main>
+
+<script type="module" src="firebase-app.js"></script>
+<script type="module" src="admin-firebase.js"></script>
+<script type="module">
+  const $ = id => document.getElementById(id);
+  const message = $('adminMessage');
+  const container = $('adminContainer');
+  let data = null;
+
+  const money = n => '₦' + Number(n || 0).toLocaleString('en-NG');
+  const esc = value => String(value ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+  const dateText = value => {
+    try {
+      const d = value?.toDate ? value.toDate() : (value ? new Date(value) : null);
+      return d && !isNaN(d) ? d.toLocaleString('en-NG',{dateStyle:'medium',timeStyle:'short'}) : '—';
+    } catch { return '—'; }
+  };
+
+  function setMessage(text, type='info'){
+    message.textContent = text;
+    message.className = 'admin-message ' + type;
+  }
+
+  function statCard(label, value, icon){
+    return `<div class="admin-stat"><span>${icon}</span><small>${label}</small><strong>${value}</strong></div>`;
+  }
+
+  function render(){
+    const {users,requests,products,orders,reports=[],tickets=[]} = data;
+    const pendingSellers = requests.filter(x=>x.status==='pending').length;
+    const pendingProducts = products.filter(x=>x.approved!==true).length;
+    const sellers = users.filter(x=>x.role==='seller').length;
+    const admins = users.filter(x=>x.role==='admin').length;
+    const sales = orders.reduce((sum,x)=>sum+Number(x.total||0),0);
+
+    container.innerHTML = `
+      <div class="admin-topbar">
+        <div><b>Welcome, Admin</b><span>Secure Firebase admin controls</span></div>
+        <button class="btn" id="refreshAdmin">↻ Refresh</button>
+      </div>
+
+      <div class="admin-stats">
+        ${statCard('Customers', users.filter(x=>x.role==='customer').length, '👥')}
+        ${statCard('Sellers', sellers, '🏪')}
+        ${statCard('Seller Requests', pendingSellers, '📋')}
+        ${statCard('Products Pending', pendingProducts, '📦')}
+        ${statCard('Orders', orders.length, '🛒')}
+        ${statCard('Order Value', money(sales), '💰')}
+      </div>
+
+      <div class="p9-grid">
+        ${statCard('Delivered Orders', orders.filter(o=>o.status==='Delivered').length, '✅')}
+        ${statCard('Cancelled Orders', orders.filter(o=>o.status==='Cancelled').length, '↩️')}
+        ${statCard('Low Stock', products.filter(p=>Number(p.stock||0)<=5).length, '⚠️')}
+        ${statCard('Featured Products', products.filter(p=>p.featured===true).length, '⭐')}
+      </div>
+
+      <section class="p9-panel">
+        <div class="admin-card-head"><div><span class="eyebrow">PHASE 9 ANALYTICS</span><h3>Marketplace Overview</h3></div></div>
+        <div class="p9-bars">
+          <div class="p9-bar"><span>Customers</span><div class="p9-track"><div class="p9-fill" style="width:${Math.min(100,(users.filter(u=>u.role==='customer').length/Math.max(1,users.length))*100)}%"></div></div><b>${users.filter(u=>u.role==='customer').length}</b></div>
+          <div class="p9-bar"><span>Sellers</span><div class="p9-track"><div class="p9-fill" style="width:${Math.min(100,(users.filter(u=>u.role==='seller').length/Math.max(1,users.length))*100)}%"></div></div><b>${users.filter(u=>u.role==='seller').length}</b></div>
+          <div class="p9-bar"><span>Products</span><div class="p9-track"><div class="p9-fill" style="width:${Math.min(100,products.length?100:0)}%"></div></div><b>${products.length}</b></div>
+          <div class="p9-bar"><span>Orders</span><div class="p9-track"><div class="p9-fill" style="width:${Math.min(100,orders.length?Math.max(8,orders.length*8):0)}%"></div></div><b>${orders.length}</b></div>
+        </div>
+      </section>
+
+      <section class="admin-card">
+        <div class="admin-card-head"><div><span class="eyebrow">CUSTOMER MANAGEMENT</span><h3>Accounts</h3></div><span class="admin-badge">${users.length} total</span></div>
+        <div class="p9-toolbar"><input id="adminUserSearch" placeholder="Search name, email or role..."><select id="adminUserRole"><option value="all">All roles</option><option value="customer">Customers</option><option value="seller">Sellers</option><option value="admin">Admins</option></select></div>
+        <div class="admin-user-grid" id="adminUserGrid"></div>
+      </section>
+
+      <section class="admin-card">
+        <div class="admin-card-head"><div><span class="eyebrow">MODERATION</span><h3>Product Reports</h3></div><span class="admin-badge">${reports.filter(r=>r.status!=='resolved').length} open</span></div>
+        <div class="admin-list">
+          ${reports.length ? reports.filter(r=>r.status!=='resolved').map(r=>`<div class="p9-report"><b>${esc(r.productName||'Product report')}</b><p>${esc(r.reason||'No reason provided')}</p><small>${esc(r.reporterEmail||r.customerId||'Customer')}</small><br><button class="btn admin-resolve-report" data-id="${esc(r.firestoreId)}">Mark Resolved</button></div>`).join('') : '<div class="empty-admin">No open product reports.</div>'}
+        </div>
+      </section>
+
+      <section class="admin-card">
+        <div class="admin-card-head"><div><span class="eyebrow">SELLER MANAGEMENT</span><h3>Seller Applications</h3></div><span class="admin-badge">${pendingSellers} pending</span></div>
+        <div class="admin-list">
+          ${requests.length ? requests.sort((a,b)=>(b.createdAt?.toMillis?.()||0)-(a.createdAt?.toMillis?.()||0)).map(r=>{
+            const user = users.find(u=>u.id===r.uid);
+            const status = r.status || 'pending';
+            return `<div class="admin-row">
+              <div class="admin-main"><b>${esc(r.storeName||r.businessName||'Seller Application')}</b><span>${esc(r.email||user?.email||'')} · ${esc(r.uid||'')}</span><small>${esc(r.phone||user?.phone||'')} · ${dateText(r.createdAt)}</small></div>
+              <span class="admin-status ${status}">${esc(status)}</span>
+              <div class="admin-actions">${status==='pending' ? `<button class="btn admin-approve-seller" data-id="${r.firestoreId}" data-uid="${r.uid}">Approve</button><button class="btn danger admin-reject-seller" data-id="${r.firestoreId}">Reject</button>` : '<span class="muted">Reviewed</span>'}</div>
+            </div>`;
+          }).join('') : '<div class="empty-admin">No seller applications yet.</div>'}
+        </div>
+      </section>
+
+      <section class="admin-card">
+        <div class="admin-card-head"><div><span class="eyebrow">PRODUCT MANAGEMENT</span><h3>Seller Products</h3></div><span class="admin-badge">${pendingProducts} awaiting review</span></div>
+        <div class="admin-list">
+          ${products.length ? products.sort((a,b)=>(b.id||0)-(a.id||0)).map(p=>`<div class="admin-row">
+            <div class="admin-product-thumb">${p.image ? `<img src="${esc(p.image)}" alt="">` : '🛍️'}</div>
+            <div class="admin-main"><b>${esc(p.name||'LEX Product')}</b><span>${esc(p.category||'Other')} · ${money(p.price)}</span><small>Seller: ${esc(p.sellerName||p.sellerId||'Unknown')} · Stock: ${Number(p.stock||0)}</small></div>
+            <span class="admin-status ${p.approved===true?'approved':(p.approvalStatus==='rejected'?'rejected':'pending')}">${p.approved===true?'approved':(p.approvalStatus==='rejected'?'rejected':'pending')}</span>
+            <div class="admin-actions">${p.approved===true ? `<button class="btn danger admin-reject-product" data-id="${p.firestoreId}">Unapprove</button>` : `<button class="btn admin-approve-product" data-id="${p.firestoreId}">Approve</button><button class="btn danger admin-reject-product" data-id="${p.firestoreId}">Reject</button>`}<button class="btn ${p.featured?'primary':''} admin-feature-product" data-id="${p.firestoreId}" data-featured="${p.featured?'true':'false'}">${p.featured?'★ Featured':'☆ Feature'}</button></div>
+          </div>`).join('') : '<div class="empty-admin">No seller products yet.</div>'}
+        </div>
+      </section>
+
+      <section class="admin-card">
+        <div class="admin-card-head"><div><span class="eyebrow">ORDER MANAGEMENT</span><h3>Customer Orders</h3></div><span class="admin-badge">${orders.length} total</span></div>
+        <div class="admin-list">
+          ${orders.length ? orders.sort((a,b)=>(b.createdAt?.toMillis?.()||0)-(a.createdAt?.toMillis?.()||0)).map(o=>`<div class="admin-row order-admin-row">
+            <div class="admin-main"><b>${esc(o.orderId||o.firestoreId)}</b><span>${esc(o.customer?.name||o.customer?.email||o.customerId||'Customer')}</span><small>${dateText(o.createdAt)} · ${money(o.total)}</small></div>
+            <select class="admin-order-select" data-id="${o.firestoreId}">${['Order Placed','Processing','Shipped','Out for Delivery','Delivered','Cancelled'].map(s=>`<option value="${s}" ${o.status===s?'selected':''}>${s}</option>`).join('')}</select>
+          </div>`).join('') : '<div class="empty-admin">No orders yet.</div>'}
+        </div>
+      </section>
+
+      <section class="admin-card">
+        <div class="admin-card-head"><div><span class="eyebrow">CUSTOMER SUPPORT</span><h3>Support Tickets</h3></div><span class="admin-badge">${tickets.filter(t=>t.status!=='Resolved').length} open</span></div>
+        <div class="admin-list">
+          ${tickets.length ? tickets.sort((a,b)=>(b.createdAt?.toMillis?.()||0)-(a.createdAt?.toMillis?.()||0)).map(t=>`<div class="admin-row">
+            <div class="admin-main"><b>${esc(t.subject||'Customer Support Message')}</b><span>${esc(t.customerEmail||t.customerId||'Customer')}</span><small>${esc(t.message||'')} · ${dateText(t.createdAt)}</small></div>
+            <select class="admin-ticket-select" data-id="${esc(t.firestoreId)}" data-old="${esc(t.status||'Open')}">${['Open','In Progress','Resolved'].map(st=>`<option value="${st}" ${(t.status||'Open')===st?'selected':''}>${st}</option>`).join('')}</select>
+          </div>`).join('') : '<div class="empty-admin">No support tickets yet.</div>'}
+        </div>
+      </section>
+
+      <section class="admin-card">
+        <div class="admin-card-head"><div><span class="eyebrow">USER OVERVIEW</span><h3>Registered Accounts</h3></div><span class="admin-badge">${users.length} accounts</span></div>
+        <div class="admin-user-grid">
+          ${users.sort((a,b)=>String(a.name||'').localeCompare(String(b.name||''))).map(u=>`<div class="admin-user"><div class="admin-avatar">${(u.name||u.email||'?').charAt(0).toUpperCase()}</div><div><b>${esc(u.name||'LEX User')}</b><span>${esc(u.email||'')}</span></div><em class="role-${esc(u.role||'customer')}">${esc(u.role||'customer')}</em></div>`).join('')}
+        </div>
+      </section>
+    `;
+
+    container.hidden = false;
+    bindActions();
+  }
+
+  async function refresh(){
+    setMessage('Loading admin data...', 'info');
+    try {
+      data = await window.lexAdminLoad();
+      setMessage('Admin dashboard connected to Firebase.', 'success');
+      render();
+    } catch(err){
+      container.hidden = true;
+      setMessage(err.message || 'Unable to load admin dashboard.', 'error');
+    }
+  }
+
+  function bindActions(){
+    $('refreshAdmin')?.addEventListener('click', refresh);
+    document.querySelectorAll('.admin-approve-seller').forEach(btn=>btn.addEventListener('click', async()=>{
+      if(!confirm('Approve this seller application?')) return;
+      btn.disabled=true;
+      try { await window.lexAdminApproveSeller(btn.dataset.id, btn.dataset.uid); await refresh(); }
+      catch(err){ alert(err.message); btn.disabled=false; }
+    }));
+    document.querySelectorAll('.admin-reject-seller').forEach(btn=>btn.addEventListener('click', async()=>{
+      if(!confirm('Reject this seller application?')) return;
+      btn.disabled=true;
+      try { await window.lexAdminRejectSeller(btn.dataset.id); await refresh(); }
+      catch(err){ alert(err.message); btn.disabled=false; }
+    }));
+    document.querySelectorAll('.admin-approve-product').forEach(btn=>btn.addEventListener('click', async()=>{
+      if(!confirm('Approve this product for the public store?')) return;
+      btn.disabled=true;
+      try { await window.lexAdminApproveProduct(btn.dataset.id); await refresh(); }
+      catch(err){ alert(err.message); btn.disabled=false; }
+    }));
+    document.querySelectorAll('.admin-reject-product').forEach(btn=>btn.addEventListener('click', async()=>{
+      if(!confirm('Reject/unapprove this product?')) return;
+      btn.disabled=true;
+      try { await window.lexAdminRejectProduct(btn.dataset.id); await refresh(); }
+      catch(err){ alert(err.message); btn.disabled=false; }
+    }));
+    document.querySelectorAll('.admin-feature-product').forEach(btn=>btn.addEventListener('click', async()=>{
+      btn.disabled=true;
+      try { await window.lexAdminSetFeatured(btn.dataset.id, btn.dataset.featured!=='true'); await refresh(); }
+      catch(err){ alert(err.message); btn.disabled=false; }
+    }));
+    document.querySelectorAll('.admin-resolve-report').forEach(btn=>btn.addEventListener('click', async()=>{
+      btn.disabled=true;
+      try { await window.lexAdminResolveProductReport(btn.dataset.id); await refresh(); }
+      catch(err){ alert(err.message); btn.disabled=false; }
+    }));
+    const grid=document.getElementById('adminUserGrid'), search=document.getElementById('adminUserSearch'), role=document.getElementById('adminUserRole');
+    function drawUsers(){ if(!grid)return; const q=(search?.value||'').toLowerCase(), r=role?.value||'all'; const rows=(data?.users||[]).filter(u=>(r==='all'||(u.role||'customer')===r)&&((u.name||'').toLowerCase().includes(q)||(u.email||'').toLowerCase().includes(q)||(u.role||'').toLowerCase().includes(q))); grid.innerHTML=rows.map(u=>`<div class="admin-user"><div class="admin-avatar">${esc((u.name||u.email||'?').charAt(0).toUpperCase())}</div><div><b>${esc(u.name||'LEX User')}</b><span>${esc(u.email||'')}</span></div><em class="role-${esc(u.role||'customer')}">${esc(u.role||'customer')}</em></div>`).join('')||'<div class="empty-admin">No matching accounts.</div>'; }
+    search?.addEventListener('input',drawUsers); role?.addEventListener('change',drawUsers); drawUsers();
+    document.querySelectorAll('.admin-order-select').forEach(select=>select.addEventListener('change', async()=>{
+      const old = select.dataset.old || select.value;
+      try { await window.lexAdminUpdateOrderStatus(select.dataset.id, select.value); select.dataset.old=select.value; setMessage('Order status updated.', 'success'); }
+      catch(err){ alert(err.message); select.value=old; }
+    }));
+  }
+
+  window.addEventListener('lex-auth-changed', refresh);
+  window.addEventListener('load', ()=>setTimeout(refresh,350));
+</script>
+<script src="phase6.js"></script><script src="phase7.js"></script><script src="phase8.js"></script><script src="phase9.js"></script><script src="phase10.js"></script></body>
+</html>

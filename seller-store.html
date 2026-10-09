@@ -1,0 +1,19 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Seller Store - LEX Market</title><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="phase6.css"><link rel="stylesheet" href="phase7.css"><link rel="stylesheet" href="phase8.css"><link rel="stylesheet" href="phase9.css"><link rel="stylesheet" href="phase10.css"></head><body>
+<header><div class="wrap header-inner"><a class="logo" href="index.html"><b>LEX</b><span>MARKET</span></a><div class="actions"><a href="wishlist.html">♡<small>Wishlist</small></a><a href="cart.html">🛒<small>Cart</small></a><a href="account.html">♙<small>Account</small></a></div></div></header>
+<main><section class="section"><div class="wrap"><a href="products.html" class="muted">← Back to products</a><div id="store"></div></div></section></main>
+<script type="module" src="firebase-app.js"></script><script type="module" src="firebase-catalog.js"></script><script src="script.js"></script><script src="phase9.js"></script>
+<script type="module">
+import {collection,getDocs} from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js';
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+const money=n=>'₦'+Number(n||0).toLocaleString('en-NG');
+const params=new URLSearchParams(location.search), sellerId=params.get('sellerId'), sellerName=params.get('sellerName')||'LEX Seller';
+const box=document.getElementById('store');
+async function load(){
+ try{
+  const f=window.lexFirebase;if(!f?.db){box.innerHTML='<div class="empty"><h2>Store unavailable</h2><p>Firebase is not connected.</p></div>';return;}
+  const snap=await getDocs(collection(f.db,'products'));const products=snap.docs.map(d=>({firestoreId:d.id,...d.data()})).filter(p=>p.approved===true&&(!sellerId||p.sellerId===sellerId));
+  const name=products[0]?.sellerName||sellerName;
+  box.innerHTML=`<div class="p9-panel"><span class="eyebrow">SELLER STORE</span><h1>${esc(name)}</h1><p class="muted">Browse approved products from this LEX seller.</p></div><div class="product-grid" style="margin-top:18px">${products.length?products.map(p=>`<article class="card"><div class="pic"><span class="discount">${p.discount||0}% OFF</span><img class="product-image" src="${esc(p.image||'')}" alt="${esc(p.name)}" loading="lazy"></div><div class="card-body"><small>${esc(p.category||'Other')}</small><h3>${esc(p.name)}</h3><div class="rating">★ ${Number(p.rating||0).toFixed(1)} <small>(${Number(p.reviews||0)})</small></div><div class="price"><strong>${money(p.price)}</strong>${p.oldPrice?`<del>${money(p.oldPrice)}</del>`:''}</div><button class="add" onclick="location.href='product.html?id=${encodeURIComponent(p.id)}'">View Product</button></div></article>`).join(''):'<div class="empty"><h3>No approved products yet.</h3></div>'}</div>`;
+ }catch(e){box.innerHTML=`<div class="empty"><h2>Could not load store</h2><p>${esc(e.message)}</p></div>`}
+} load();
+</script><script src="phase10.js"></script></body></html>
